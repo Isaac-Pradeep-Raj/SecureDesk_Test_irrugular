@@ -1,0 +1,40 @@
+# Global ignores
+.git/
+
+# Python
+**/__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.venv/
+venv/
+**/venv/
+.pytest_cache/
+.mypy_cache/
+
+# Node
+**/node_modules/
+
+# Build artifacts
+build/
+dist/
+coverage/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Local runtime data
+*.db
+*.sqlite
+*.sqlite3
+backend/uploads/
+*.log
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
