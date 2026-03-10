@@ -13,7 +13,7 @@ def init_db():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # USERS TABLE
+    # ================= USERS TABLE =================
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -23,21 +23,39 @@ def init_db():
         )
     """)
 
+    # ================= DOCUMENTS TABLE =================
     cursor.execute("""
-CREATE TABLE IF NOT EXISTS documents (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    filename TEXT,
-    domain TEXT,
-    classification TEXT,
-    uploaded_by TEXT
-)
-""")
+        CREATE TABLE IF NOT EXISTS documents (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            filename TEXT,
+            domain TEXT,
+            classification TEXT,
+            uploaded_by TEXT,
 
-    # DEFAULT USERS
+            processed INTEGER DEFAULT 0,
+            chunks INTEGER DEFAULT 0,
+
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
+    # ================= DOCUMENT CHUNKS TABLE =================
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS document_chunks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            document_id INTEGER,
+            chunk_text TEXT,
+
+            FOREIGN KEY(document_id)
+            REFERENCES documents(id)
+        )
+    """)
+
+    # ================= DEFAULT USERS =================
     default_users = [
-        ("hr_user", "1234", "HR"),
-        ("dev_user", "1234", "DEV"),
-        ("it_user", "1234", "IT"),
+        ("hr", "1234", "HR"),
+        ("dev", "1234", "DEV"),
+        ("it", "1234", "IT"),
         ("admin", "admin", "SuperAdmin"),
     ]
 

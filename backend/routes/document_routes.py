@@ -2,6 +2,7 @@ import os
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from werkzeug.utils import secure_filename
+from services.document_processor import process_document
 
 from database.db import get_db_connection
 
@@ -48,11 +49,23 @@ def upload_document():
     user = get_jwt_identity()
 
     conn = get_db_connection()
-    conn.execute(
-        "INSERT INTO documents (filename, domain, classification, uploaded_by) VALUES (?, ?, ?, ?)",
+
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        INSERT INTO documents (filename, domain, classification, uploaded_by)
+        VALUES (?, ?, ?, ?)
+        """,
         (filename, domain, classification, user),
     )
+
+    document_id = cursor.lastrowid
+
     conn.commit()
     conn.close()
+
+    # Start processing
+    process_document(document_id, filename)
 
     return jsonify({"msg": "File uploaded successfully"})
