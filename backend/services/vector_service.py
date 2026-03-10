@@ -15,19 +15,22 @@ index = faiss.IndexFlatL2(dimension)
 chunk_store = []
 
 
-def add_chunks_to_index(chunks):
-    if not chunks:
+def add_chunks_to_index(chunks_data):
+    if not chunks_data:
         return
 
-    embeddings = model.encode(chunks)
+    # Extract text for encoding
+    texts = [item["text"] for item in chunks_data]
+
+    embeddings = model.encode(texts)
 
     vectors = np.array(embeddings).astype("float32")
 
     index.add(vectors)
 
-    chunk_store.extend(chunks)
+    chunk_store.extend(chunks_data)
 
-    print(f"[VectorService] Added {len(chunks)} chunks.")
+    print(f"[VectorService] Added {len(chunks_data)} chunks.")
     print(f"[VectorService] Index size: {index.ntotal}")
     print(f"[VectorService] Chunk store size: {len(chunk_store)}")
 

@@ -68,9 +68,23 @@ def process_document(document_id, filename):
         (len(chunks), document_id),
     )
 
+    # Get metadata for vector indexing
+    cursor.execute("SELECT classification, domain FROM documents WHERE id = ?", (document_id,))
+    doc_meta = cursor.fetchone()
+    classification = doc_meta["classification"]
+    domain = doc_meta["domain"]
+
     conn.commit()
     conn.close()
 
     # Add to FAISS index
     if chunks:
-        add_chunks_to_index(chunks)
+        chunks_data = [
+            {
+                "text": text,
+                "classification": classification,
+                "domain": domain
+            }
+            for text in chunks
+        ]
+        add_chunks_to_index(chunks_data)

@@ -25,31 +25,29 @@ def ask():
         })
 
     # Use the single most relevant chunk safely handling unicode
-    context = results[0]
+    context_obj = results[0]
     
     # Try encoding/decoding to ascii to drop problematic chars for json
-    context = context.encode('ascii', 'ignore').decode('ascii')
-
-    # Temporary classification logic
-    # (Later we will fetch classification from DB)
-    classification = "INTERNAL"
+    context_text = context_obj["text"].encode('ascii', 'ignore').decode('ascii')
+    classification = context_obj["classification"]
+    doc_domain = context_obj["domain"]
 
     answer = None
     escalation = None
 
     if classification in ["PUBLIC", "INTERNAL"]:
 
-        answer = context
+        answer = context_text
 
     elif classification == "RESTRICTED":
 
         answer = (
-            context +
-            "\n\nNote: Full information requires department approval."
+            context_text[:150] +
+            "...\n\n[NOTICE] Full information requires department approval."
         )
 
         escalation = build_escalation_response(
-            department,
+            doc_domain,
             classification
         )
 
@@ -58,7 +56,7 @@ def ask():
         answer = None
 
         escalation = build_escalation_response(
-            department,
+            doc_domain,
             classification
         )
 

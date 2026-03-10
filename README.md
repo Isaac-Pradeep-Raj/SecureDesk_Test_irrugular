@@ -32,5 +32,5 @@ Backend environment variables are defined in `backend/.env.example`.
 2. `git add .`
 3. `git commit -m "Initial commit"`
 4. `git branch -M main`
-5. `git remote add origin https://github.com/Isaac-Pradeep-Raj/SecureDesk_Test.git`
+5. `git remote add origin https://github.com/Isaac-Pradeep-Raj/SecureDesk_Test_irrugular.git`
 6. `git push -u origin main`

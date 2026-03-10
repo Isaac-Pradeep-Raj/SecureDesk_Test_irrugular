@@ -90,21 +90,21 @@ function ChatPage({ department }) {
 
             {/* Escalation Info */}
             {msg.escalation && (
-              <div className="mt-2 text-xs bg-white p-2 rounded text-black">
-                <p>{msg.escalation.message}</p>
+              <div className="mt-3 text-sm bg-red-50 p-3 rounded border border-red-200 text-black">
+                <p className="font-semibold text-red-700 mb-2">{msg.escalation.message}</p>
 
                 {msg.escalation.contact && (
-                  <>
-                    <p>
-                      Contact: {msg.escalation.contact.name}
-                    </p>
-                    <p>
-                      Email: {msg.escalation.contact.email}
-                    </p>
-                    <p>
-                      Phone: {msg.escalation.contact.phone}
-                    </p>
-                  </>
+                  <div className="bg-white p-2 rounded mb-2 shadow-sm">
+                    <p className="font-medium text-gray-800">Contact: {msg.escalation.contact.name}</p>
+                    <p className="text-gray-600">Email: {msg.escalation.contact.email}</p>
+                    <p className="text-gray-600">Phone: {msg.escalation.contact.phone}</p>
+                  </div>
+                )}
+                
+                {msg.classification && msg.classification !== "PUBLIC" && msg.classification !== "INTERNAL" && (
+                    <button className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-1.5 px-3 rounded transition-colors mt-2">
+                        Ask Access
+                    </button>
                 )}
               </div>
             )}

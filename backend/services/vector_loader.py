@@ -7,12 +7,23 @@ def load_chunks_into_vector_db():
     conn = get_db_connection()
 
     rows = conn.execute(
-        "SELECT chunk_text FROM document_chunks"
+        """
+        SELECT c.chunk_text, d.classification, d.domain 
+        FROM document_chunks c
+        JOIN documents d ON c.document_id = d.id
+        """
     ).fetchall()
 
     conn.close()
 
-    chunks = [row["chunk_text"] for row in rows]
+    chunks_data = [
+        {
+            "text": row["chunk_text"],
+            "classification": row["classification"],
+            "domain": row["domain"]
+        }
+        for row in rows
+    ]
 
-    if chunks:
-        add_chunks_to_index(chunks)
+    if chunks_data:
+        add_chunks_to_index(chunks_data)
