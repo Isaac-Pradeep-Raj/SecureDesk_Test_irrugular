@@ -7,6 +7,7 @@ from security.jwt_handler import jwt
 from routes.document_routes import doc_bp
 from routes.auth_routes import auth_bp
 from routes.chat_routes import chat_bp
+from routes.access_routes import access_bp
 from services.vector_loader import load_chunks_into_vector_db
 
 
@@ -20,6 +21,7 @@ def create_app():
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(chat_bp, url_prefix="/api/chat")
     app.register_blueprint(doc_bp, url_prefix="/api/docs")
+    app.register_blueprint(access_bp, url_prefix="/api/access")
 
     @app.route("/")
     def home():

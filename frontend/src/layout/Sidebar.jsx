@@ -1,4 +1,4 @@
-function Sidebar({ role, setDepartment }) {
+function Sidebar({ role, setDepartment, setPage }) {
 
   const menuByRole = {
     HR: [
@@ -27,24 +27,39 @@ function Sidebar({ role, setDepartment }) {
   const menuItems = menuByRole[role] || [];
 
   return (
-    <div className="w-64 bg-gray-900 text-white h-screen p-4">
-      <h1 className="text-xl font-bold mb-6">SecureDesk</h1>
+    <div className="w-64 bg-gray-900 text-white h-screen p-4 flex flex-col justify-between">
+      <div>
+        <h1 className="text-xl font-bold mb-6">SecureDesk</h1>
 
-      <p className="text-xs text-gray-400 mb-4">
-        Logged as: {role}
-      </p>
+        <p className="text-xs text-gray-400 mb-4">
+          Logged as: {role}
+        </p>
 
-      <ul className="space-y-3">
-        {menuItems.map((item) => (
+        <ul className="space-y-3">
+          {menuItems.map((item) => (
+            <li
+              key={item.name}
+              onClick={() => {
+                setDepartment(item.dept);
+                setPage("chat");
+              }}
+              className="p-2 rounded hover:bg-gray-700 cursor-pointer"
+            >
+              {item.name}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <ul className="space-y-3 border-t border-gray-700 pt-4">
           <li
-            key={item.name}
-            onClick={() => setDepartment(item.dept)}
-            className="p-2 rounded hover:bg-gray-700 cursor-pointer"
+            onClick={() => setPage("approvals")}
+            className="p-2 rounded bg-blue-600 hover:bg-blue-700 cursor-pointer text-center font-semibold"
           >
-            {item.name}
+            Approvals
           </li>
-        ))}
-      </ul>
+        </ul>
+      </div>
     </div>
   );
 }

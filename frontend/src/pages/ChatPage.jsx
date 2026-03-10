@@ -42,6 +42,7 @@ function ChatPage({ department }) {
         text: data.answer || "No response available.",
         classification: data.classification,
         escalation: data.escalation,
+        domain: data.domain,
       };
 
       setMessages((prev) => [...prev, aiMessage]);
@@ -56,6 +57,28 @@ function ChatPage({ department }) {
     }
 
     setLoading(false);
+  };
+
+  const handleAskAccess = async (classification, targetDomain) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch("http://localhost:5000/api/access/request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ domain: targetDomain, classification })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert(data.msg || "Access request sent.");
+      } else {
+        alert(data.msg || "Failed to send request.");
+      }
+    } catch (err) {
+      alert("Error: " + err.message);
+    }
   };
 
   return (
@@ -73,11 +96,10 @@ function ChatPage({ department }) {
         {messages.map((msg, index) => (
           <div
             key={index}
-            className={`p-3 rounded max-w-lg ${
-              msg.sender === "user"
+            className={`p-3 rounded max-w-lg ${msg.sender === "user"
                 ? "bg-blue-500 text-white ml-auto"
                 : "bg-gray-200 text-gray-800"
-            }`}
+              }`}
           >
             <p>{msg.text}</p>
 
@@ -100,11 +122,14 @@ function ChatPage({ department }) {
                     <p className="text-gray-600">Phone: {msg.escalation.contact.phone}</p>
                   </div>
                 )}
-                
+
                 {msg.classification && msg.classification !== "PUBLIC" && msg.classification !== "INTERNAL" && (
-                    <button className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-1.5 px-3 rounded transition-colors mt-2">
-                        Ask Access
-                    </button>
+                  <button
+                    onClick={() => handleAskAccess(msg.classification, msg.domain)}
+                    className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-1.5 px-3 rounded transition-colors mt-2"
+                  >
+                    Ask Access
+                  </button>
                 )}
               </div>
             )}

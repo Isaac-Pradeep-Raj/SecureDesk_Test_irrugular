@@ -3,6 +3,7 @@ import MainLayout from "./layout/MainLayout";
 import ChatPage from "./pages/ChatPage";
 import LoginPage from "./pages/LoginPage";
 import UploadPage from "./pages/UploadPage";
+import Approvals from "./pages/Approvals";
 
 function App() {
   const [role, setRole] = useState(
@@ -53,6 +54,8 @@ function App() {
       )}
 
       {page === "upload" && isAdmin && <UploadPage />}
+
+      {page === "approvals" && <Approvals />}
     </MainLayout>
   );
 }

@@ -51,6 +51,19 @@ def init_db():
         )
     """)
 
+    # ================= ACCESS REQUESTS TABLE =================
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS access_requests (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            requester_role TEXT,
+            target_domain TEXT,
+            classification TEXT,
+            status TEXT DEFAULT 'PENDING',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            expires_at TIMESTAMP
+        )
+    """)
+
     # ================= DEFAULT USERS =================
     default_users = [
         ("hr", "1234", "HR"),
