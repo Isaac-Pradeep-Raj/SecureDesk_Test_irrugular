@@ -1,4 +1,4 @@
-# SecureDesk_v2
+# SecureDesk_Used_in_Second_Review
 
 SecureDesk_v2 is a local-first enterprise knowledge assistant with a React frontend and Flask backend.
 
